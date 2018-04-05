@@ -1,6 +1,7 @@
 FROM docker:stable-dind
 
 RUN apk add --no-cache \
+  bash \
   curl \
   py2-pip
 
