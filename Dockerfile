@@ -4,6 +4,8 @@ RUN apk add --no-cache \
   curl \
   py2-pip
 
+RUN pip install --upgrade pip
+
 RUN pip install awscli
 
 WORKDIR /usr/local/bin
