@@ -29,7 +29,7 @@ RUN apk add --no-cache \
   bash \
   gawk \
   git \
-  gpg \
+  gnupg \
   python2 \
   py2-pip
 
