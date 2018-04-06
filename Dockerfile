@@ -3,6 +3,9 @@ FROM docker:stable-dind
 RUN apk add --no-cache \
   bash \
   curl \
+  git \
+  git-secret \
+  python2 \
   py2-pip
 
 RUN pip install --upgrade pip
