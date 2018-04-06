@@ -27,7 +27,9 @@ COPY --from=build /usr/local/ /usr/local/
 
 RUN apk add --no-cache \
   bash \
+  gawk \
   git \
+  gpg \
   python2 \
   py2-pip
 
