@@ -14,6 +14,7 @@ RUN \
     gawk \
     libffi-dev \
     openssl-dev \
+    pigz \
     python2-dev \
     py2-pip \
     tzdata
