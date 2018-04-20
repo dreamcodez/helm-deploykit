@@ -1,3 +1,5 @@
+# Docker-in-Docker image so we can run the docker daemon inside a docker container.
+# This is because AWS codebuild itself runs on docker, and we need to be able to utilize the daemon flexibly.
 FROM docker:stable-dind AS build
 
 WORKDIR /usr/local/bin
@@ -45,4 +47,5 @@ FROM scratch
 
 COPY --from=build / /
 
+# same as base image
 ENTRYPOINT dockerd-entrypoint.sh
