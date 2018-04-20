@@ -26,11 +26,11 @@ RUN \
 
 RUN \
   echo Downloading helm binary... && \
-  curl -sL https://kubernetes-helm.storage.googleapis.com/helm-v2.8.2-linux-amd64.tar.gz | tar --strip 1 -xvz linux-amd64/helm && \
+  (curl -sL https://kubernetes-helm.storage.googleapis.com/helm-v2.8.2-linux-amd64.tar.gz | tar --strip 1 -xvz linux-amd64/helm) && \
   chmod a+x helm
 
 # removing buildtime deps
-RUN apk del \
+RUN apk del --no-cache \
   build-base \
   curl \
   gawk \
