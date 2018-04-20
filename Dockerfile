@@ -21,11 +21,13 @@ RUN pip install awscli credstash
 
 RUN \
   echo Downloading kubectl binary... && \
-  curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+  chmod a+x kubectl
 
 RUN \
   echo Downloading helm binary... && \
-  curl -sL https://kubernetes-helm.storage.googleapis.com/helm-v2.8.2-linux-amd64.tar.gz | tar --strip 1 -xvz linux-amd64/helm
+  curl -sL https://kubernetes-helm.storage.googleapis.com/helm-v2.8.2-linux-amd64.tar.gz | tar --strip 1 -xvz linux-amd64/helm && \
+  chmod a+x helm
 
 # removing buildtime deps
 RUN apk del \
@@ -48,4 +50,4 @@ FROM scratch
 COPY --from=build / /
 
 # same as base image
-ENTRYPOINT dockerd-entrypoint.sh
+#ENTRYPOINT dockerd-entrypoint.sh
