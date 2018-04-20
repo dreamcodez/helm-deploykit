@@ -5,6 +5,7 @@ FROM docker:stable-dind AS build
 WORKDIR /usr/local/bin
 
 # one layer for better size, remove build deps before its done :)
+# https://wiki.alpinelinux.org/wiki/Setting_the_timezone
 RUN \
   apk add --no-cache \
     bash \
@@ -14,7 +15,8 @@ RUN \
     libffi-dev \
     openssl-dev \
     python2-dev \
-    py2-pip
+    py2-pip \
+    tzdata
 
 RUN pip install --upgrade pip
 RUN pip install awscli credstash
