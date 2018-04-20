@@ -4,4 +4,4 @@
 - helm
 - kubectl
 - awscli, credstash (installed via pip)
-- xz (lzma)
+- pigz (parallel gzip) https://zlib.net/pigz/
