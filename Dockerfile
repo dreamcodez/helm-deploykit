@@ -1,40 +1,48 @@
 FROM docker:stable-dind AS build
 
-RUN apk add --no-cache \
-  bash \
-  build-base \
-  curl \
-  git
-
-WORKDIR /tmp
-RUN git clone https://github.com/sobolevn/git-secret.git git-secret
-
-WORKDIR /tmp/git-secret
-RUN make build && PREFIX="/usr/local" make install
-
 WORKDIR /usr/local/bin
 
-# kubectl binary
-RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-
-# helm binary
-RUN curl -sL https://kubernetes-helm.storage.googleapis.com/helm-v2.8.2-linux-amd64.tar.gz | tar --strip 1 -xvz linux-amd64/helm
-
-# RUNTIME IMAGE
-FROM docker:stable-dind
-
-COPY --from=build /usr/local/ /usr/local/
-
-RUN apk add --no-cache \
-  bash \
-  gawk \
-  git \
-  gnupg \
-  python2 \
-  py2-pip
+# one layer for better size, remove build deps before its done :)
+RUN \
+  apk add --no-cache \
+    bash \
+    build-base \
+    curl \
+    gawk \
+    libffi-dev \
+    openssl-dev \
+    python2-dev \
+    py2-pip
 
 RUN pip install --upgrade pip
+RUN pip install awscli credstash
 
-RUN pip install awscli
+RUN \
+  echo Downloading kubectl binary... && \
+  curl -sLO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+
+RUN \
+  echo Downloading helm binary... && \
+  curl -sL https://kubernetes-helm.storage.googleapis.com/helm-v2.8.2-linux-amd64.tar.gz | tar --strip 1 -xvz linux-amd64/helm
+
+# removing buildtime deps
+RUN apk del \
+  build-base \
+  curl \
+  gawk \
+  libffi-dev \
+  openssl-dev \
+  python2-dev
+
+# add just runtime lib deps back in
+RUN apk add --no-cache \
+    libffi \
+    openssl \
+    python2
+
+# one output layer
+FROM scratch
+
+COPY --from=build / /
 
 ENTRYPOINT dockerd-entrypoint.sh
