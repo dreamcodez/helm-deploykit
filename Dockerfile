@@ -14,10 +14,10 @@ RUN \
     gawk \
     libffi-dev \
     openssl-dev \
+    pigz \
     python2-dev \
     py2-pip \
-    tzdata \
-    xz
+    tzdata
 
 RUN pip install --upgrade pip
 RUN pip install awscli credstash
