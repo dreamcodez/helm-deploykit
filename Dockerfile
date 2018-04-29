@@ -13,11 +13,13 @@ RUN \
     curl \
     gawk \
     libffi-dev \
+    nodejs \
     openssl-dev \
     pigz \
     python2-dev \
     py2-pip \
-    tzdata
+    tzdata \
+    yarn
 
 RUN pip install --upgrade pip
 RUN pip install awscli credstash
